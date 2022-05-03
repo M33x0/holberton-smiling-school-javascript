@@ -1,15 +1,15 @@
 $(document).ready(function() {
   /* VARIABLES */
-  let dataPopularVideos = [];
-  let dataLastestVideos = [];
+  const dataPopularVideos = [];
+  const dataLastestVideos = [];
 
   /* FUNCTIONS */
 
   function xmlToObj(xml, type, tag) {
-    let data = [];
+    const data = [];
 
     $(xml).find(tag).children().each(function(index) {
-      let itemUnique;
+      const itemUnique = 0;
 
       switch(type) {
         case "quote":
@@ -36,7 +36,7 @@ $(document).ready(function() {
         case "courses":
           switch (index) {
             case 0:
-              let topics = []
+              const topics = []
 
               $(this).find("topic").each(function(idx) {
                 topics.push($(this)[0].textContent);
@@ -44,7 +44,7 @@ $(document).ready(function() {
               data.topics = topics;
               break;
             case 2:
-              let sorts = []
+              const sorts = []
 
               $(this).find("sort").each(function(idx) {
                 sorts.push($(this)[0].textContent);
@@ -52,10 +52,10 @@ $(document).ready(function() {
               data.sorts = sorts;
               break;
             case 5:
-              let courses = []
+              const courses = []
 
               $(this).find("course").each(function(idx) {
-                let course = {};
+                const course = {};
 
                 course.thumb_url = $(this)[0].children[2].textContent;
                 course.title = $(this)[0].children[0].textContent;
@@ -87,7 +87,7 @@ $(document).ready(function() {
       data = xmlToObj(xml, "quote", "quotes");
 
       data.forEach(item => {
-        let active = "";
+        const active = "";
       
         // the first one has the active
         if (item.id == 1) {
@@ -122,15 +122,15 @@ $(document).ready(function() {
       url: url
     })
     .done(function(xml) {
-      let cnt = 0;
-      let data = xmlToObj(xml, "carousel", "videos");
+      const cnt = 0;
+      const data = xmlToObj(xml, "carousel", "videos");
 
       data.forEach(item => {
 
-        let nextCard = cnt == data.length -1 ? 0 : cnt + 1;
-        let prevCard = cnt == 0 ? data.length -1 : cnt - 1;
+        const nextCard = cnt == data.length -1 ? 0 : cnt + 1;
+        const prevCard = cnt == 0 ? data.length -1 : cnt - 1;
 
-        let card = $(
+        const card = $(
           '<div class="card border-0 mr-2" style="width: 16rem;" attr-next="' + nextCard + '" attr-prev="' + prevCard + '">' +
             '<div class="d-flex align-items-center justify-content-center">' +
               '<img src="' + item.thumb_url + '" alt="Video #1" class="card-img-top">' +
@@ -174,7 +174,7 @@ $(document).ready(function() {
   }
 
   function itemToShow() {
-    let size = $(window).width()
+    const size = $(window).width()
 
     if (size >= 1200)
       return 4;
@@ -188,29 +188,29 @@ $(document).ready(function() {
 
   function slidesCards(action, container, variable) {
 
-    let itemtoShow = itemToShow();
-    let shownItems = $("#" + container).children().length;
+    const itemtoShow = itemToShow();
+    const shownItems = $("#" + container).children().length;
 
     if (action.localeCompare("") === 0) {
-      for (let cnt = 0; cnt < itemtoShow; cnt++) {
+      for (const cnt = 0; cnt < itemtoShow; cnt++) {
         $("#" + container).append(variable[cnt]);
       }
     } else if (action.localeCompare("next") === 0 && shownItems != variable.length) {
-      let nextCard = parseInt($("#" + container + " .card").last().attr("attr-next"));
+      const nextCard = parseInt($("#" + container + " .card").last().attr("attr-next"));
       $("#" + container + " .card").first().remove();
       $("#" + container).append(variable[nextCard]);
     } else if(action.localeCompare("prev") === 0 && shownItems != variable.length) {
-      let prevCard = parseInt($("#" + container + " .card").first().attr("attr-prev"))
+      const prevCard = parseInt($("#" + container + " .card").first().attr("attr-prev"))
       $("#" + container + " .card").last().remove();
       $("#" + container).prepend(variable[prevCard]);
     } else if (action.localeCompare("resize") == 0) {
       if (shownItems > itemtoShow) {
-        for (let cnt = 0; cnt < shownItems - itemtoShow; cnt++) {
+        for (const cnt = 0; cnt < shownItems - itemtoShow; cnt++) {
           $("#" + container + " .card").last().remove();
         }
       } else {
-        for (let cnt = 0; cnt < itemtoShow - shownItems; cnt++) {
-          let nextCard = $("#" + container + " .card").last().attr("attr-next");
+        for (const cnt = 0; cnt < itemtoShow - shownItems; cnt++) {
+          const nextCard = $("#" + container + " .card").last().attr("attr-next");
           $("#" + container).append(variable[nextCard]);
         }
       }
@@ -218,9 +218,9 @@ $(document).ready(function() {
   }
 
   function dataCourses(action) {
-    let search = "";
-    let sortBy = "";
-    let topic = "";
+    const search = "";
+    const sortBy = "";
+    const topic = "";
 
     if (action.localeCompare("search") == 0) {
       search = $("#keywords").val();
@@ -238,13 +238,13 @@ $(document).ready(function() {
       }
     })
     .done(function(xml){
-      let data = xmlToObj(xml, "courses", "result")
+      const data = xmlToObj(xml, "courses", "result")
 
       if (action.localeCompare("dropdown") == 0) {
         // topic option
         $("#topic").html(data.topics[0]);
         data.topics.forEach(item => {
-          let option = $('<a class="dropdown-item">' + item + '</a>');
+          const option = $('<a class="dropdown-item">' + item + '</a>');
           $("#topicInput").append(option)
           $(option).click(function() {
             $("#topic").html($(this).html());
@@ -256,7 +256,7 @@ $(document).ready(function() {
         // sort options
         $("#sort").html(data.topics[0]);
         data.sorts.forEach(item => {
-          let option = $('<a class="dropdown-item" attr-val="' + item + '">' + item.replace("_", " ") + '</a>');
+          const option = $('<a class="dropdown-item" attr-val="' + item + '">' + item.replace("_", " ") + '</a>');
           $("#sortbyInput").append(option);
           $(option).click(function() {
             $("#sort").html($(this).html());
@@ -269,7 +269,7 @@ $(document).ready(function() {
         $("#results").html("");
 
         data.courses.forEach(item => {
-          let card = 
+          const card = 
             '<div class="d-flex col-12 col-sm-6 col-md-4 col-lg-3 px-sm-0">' +
               '<div class="card border-0 ml-2">' +
                 '<div class="d-flex align-items-center justify-content-center">' +
