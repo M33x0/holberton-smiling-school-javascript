@@ -285,4 +285,4 @@ $(document).ready(function() {
   $("#keywords").change(function() {
     dataCourses("search");
   });
-});
+})
